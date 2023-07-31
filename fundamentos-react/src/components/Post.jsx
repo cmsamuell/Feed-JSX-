@@ -1,17 +1,21 @@
-import { format, formatDistanceToNow } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
+import { format, formatDistanceToNow } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 
-import { Avatar } from './Avatar.jsx'
-import { Comment } from './Comment.jsx'
-import styles from './Post.module.css'
-import { useState } from 'react'
+import { Avatar } from './Avatar.jsx';
+import { Comment } from './Comment.jsx';
+
+import { useState } from 'react';
+
+import styles from './post.module.css';
+
 
 
 export function Post({ author, publishedAt, content }) {
     const [comments, setComments] = useState([
         'Post muito bacana, hein!!'
     ])
-    const [newCommentText, setNewCommentText] = useState('')
+
+    const [newCommentText, setNewCommentText] = useState('');
 
     const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'ás' HH:mm'h' ", {
         locale: ptBR,
@@ -23,30 +27,28 @@ export function Post({ author, publishedAt, content }) {
     })
 
     function handleCreateNewComment() {
-        event.preventDefault()
+        event.preventDefault();
 
-        const newCommentText = event.target.comment.value
+        const newCommentText = event.target.comment.value;
 
-        setComments([...comments, newCommentText])
-        setNewCommentText('')
-
+        setComments([...comments, newCommentText]);
+        setNewCommentText('');
     }
 
     function handleNewCommentChange() {
-        event.target.setCustomValidity('')
-        setNewCommentText(event.target.value)
+        event.target.setCustomValidity('');
+        setNewCommentText(event.target.value);
     }
 
     function handleNewCommentInvalid() {
-        event.target.setCustomValidity('Esse campo é obrigatório')
+        event.target.setCustomValidity('Esse campo é obrigatório');
     }
 
     function deleteComment(commentToDelete) {
         const commentWithoutDeletedOne = comments.filter(comment => {
             return comment !== commentToDelete
         })
-
-        setComments(commentWithoutDeletedOne)
+        setComments(commentWithoutDeletedOne);
     }
 
     const isNewCommentEmpty = newCommentText.length === 0
@@ -62,9 +64,11 @@ export function Post({ author, publishedAt, content }) {
                     </div>
                 </div>
 
-                <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+                <time
+                    title={publishedDateFormatted}
+                    dateTime={publishedAt.toISOString()}
+                >
                     {publishedDateRelativeToNow}
-
                 </time>
             </header>
 
@@ -80,7 +84,10 @@ export function Post({ author, publishedAt, content }) {
                 }
             </div>
 
-            <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
+            <form
+                onSubmit={handleCreateNewComment}
+                className={styles.commentForm}
+            >
                 <strong>Deixe seu feedback</strong>
 
                 <textarea
@@ -93,7 +100,10 @@ export function Post({ author, publishedAt, content }) {
                 >
                 </textarea>
                 <footer>
-                    <button type="submit" disabled={isNewCommentEmpty}>
+                    <button
+                        type="submit"
+                        disabled={isNewCommentEmpty}
+                    >
                         Publicar
                     </button>
                 </footer>
@@ -105,8 +115,9 @@ export function Post({ author, publishedAt, content }) {
                         <Comment
                             key={comment}
                             content={comment}
-                            onDeleteComment={deleteComment}>
-                        </Comment>)
+                            onDeleteComment={deleteComment}
+                        />
+                    )
                 })}
             </div>
         </article>
